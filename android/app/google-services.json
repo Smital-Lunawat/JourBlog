@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "424437812948",
+    "project_id": "jourblog-vs",
+    "storage_bucket": "jourblog-vs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424437812948:android:557d0821d6f132b50e3541",
+        "android_client_info": {
+          "package_name": "com.example.blog_app_vs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424437812948-n86kvvua4gj2mtnar2ecv331v7gdtf9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfLq52lGJaDHXcRnowtxkiC_SnxoCx8VM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424437812948-n86kvvua4gj2mtnar2ecv331v7gdtf9p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "424437812948-j92hthpsp8kpjelitbol6v6e7hsqk0b2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.blogAppVs"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
