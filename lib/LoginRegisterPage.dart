@@ -78,9 +78,11 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
         margin: EdgeInsets.all(15.0),
         child: Form(
           key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: createInputs() + createButtons(),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: createInputs() + createButtons(),
+            ),
           ),
         ),
       ),
@@ -172,4 +174,5 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
 
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
-//hello
+
+
