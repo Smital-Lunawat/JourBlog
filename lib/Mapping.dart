@@ -28,11 +28,7 @@ class MappingPage extends StatefulWidget {
   });
 
   State<StatefulWidget> createState() {
-    return mappingPageState();
-  }
-
-  State<StatefulWidget> mappingPageState() {
-    return mappingPageState();
+    return _MappingPageState();
   }
 }
 
@@ -73,9 +69,14 @@ abstract class _MappingPageState extends State<MappingPage> {
   Widget build(BuildContext context) {
     switch (_authStatus) {
       case AuthStatus.notSignedIn:
-        return new LoginRegisterPage(
+        return LoginRegisterPage(
           auth: widget.auth,
           onSignedIn: _signedIn,
+        );
+      case AuthStatus.signedIn:
+        return HomePage(
+          auth: widget.auth,
+          onSignedOut: _signedOut,
         );
     }
     return null;

@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
+import 'Authentication.dart';
 
 class HomePage extends StatefulWidget {
+  HomePage({
+    this.auth,
+    this.onSignedOut,
+  });
+
+  final AuthImplementation auth;
+  final VoidCallback onSignedOut;
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  void _logoutUser() {}
+  void _logoutUser() async {
+    try {
+      await widget.auth.signOut();
+      widget.onSignedOut();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

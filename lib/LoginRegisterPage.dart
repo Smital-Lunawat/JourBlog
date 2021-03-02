@@ -4,11 +4,11 @@ import 'Authentication.dart';
 class LoginRegisterPage extends StatefulWidget {
   LoginRegisterPage({
     this.auth,
-    this.onSignedin,
+    this.onSignedIn,
   });
 
   final AuthImplementation auth;
-  final VoidCallback onSignedin;
+  final VoidCallback onSignedIn;
 
   State<StatefulWidget> createState() {
     return _LoginRegisterState();
@@ -31,6 +31,24 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
       return true;
     } else {
       return false;
+    }
+  }
+
+  void validateAndSubmit() async {
+    if (validateAndSave()) {
+      try {
+        if (_formType == FormType.login) {
+          String userId = await widget.auth.SignIn(_email, _password);
+          print("login userId: " + userId);
+        } else {
+          String userId = await widget.auth.SignUp(_email, _password);
+          print("Registration userId: " + userId);
+        }
+
+        widget.onSignedIn();
+      } catch (e) {
+        print("Error: " + e.toString());
+      }
     }
   }
 
@@ -124,7 +142,7 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
           child: Text("Login", style: TextStyle(fontSize: 20.0)),
           textColor: Colors.white,
           color: Colors.blueAccent,
-          onPressed: validateAndSave,
+          onPressed: validateAndSubmit,
         ),
         FlatButton(
           child: Text("Not have an account? Create Account.",
@@ -139,7 +157,7 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
           child: Text("Create Account", style: TextStyle(fontSize: 20.0)),
           textColor: Colors.white,
           color: Colors.lightBlue,
-          onPressed: validateAndSave,
+          onPressed: validateAndSubmit,
         ),
         FlatButton(
           child: Text("Already have an account? Login.",
@@ -151,4 +169,6 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
     }
     //
   }
+
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
