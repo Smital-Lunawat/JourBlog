@@ -16,7 +16,7 @@ import 'Authentication.dart';
 // class _MappingPageState extends State<MappingPage> {
 //   @override
 //   Widget build(BuildContext context) {
-//     return _MappingPageState();
+//     return _MappingPageState
 //   }
 // }
 
@@ -37,7 +37,7 @@ enum AuthStatus {
   signedIn,
 }
 
-abstract class _MappingPageState extends State<MappingPage> {
+class _MappingPageState extends State<MappingPage> {
   AuthStatus _authStatus = AuthStatus.notSignedIn;
 
   @override
