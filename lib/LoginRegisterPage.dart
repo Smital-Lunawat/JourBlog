@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Authentication.dart';
 
+enum FormType { login, register }
+
 class LoginRegisterPage extends StatefulWidget {
   LoginRegisterPage({
     this.auth,
@@ -15,11 +17,9 @@ class LoginRegisterPage extends StatefulWidget {
   }
 }
 
-enum FormType { login, register }
-
 class _LoginRegisterState extends State<LoginRegisterPage> {
   final formKey = GlobalKey<FormState>();
-  FormType _formType = FormType.login;
+  FormType _formType = FormType.register;
   String _email = "";
   String _password = "";
 
@@ -174,5 +174,3 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
 
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
-
-

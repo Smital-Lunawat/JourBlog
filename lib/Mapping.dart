@@ -20,6 +20,11 @@ import 'Authentication.dart';
 //   }
 // }
 
+enum AuthStatus {
+  notSignedIn,
+  signedIn,
+}
+
 class MappingPage extends StatefulWidget {
   final AuthImplementation auth;
 
@@ -30,11 +35,6 @@ class MappingPage extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _MappingPageState();
   }
-}
-
-enum AuthStatus {
-  notSignedIn,
-  signedIn,
 }
 
 class _MappingPageState extends State<MappingPage> {
