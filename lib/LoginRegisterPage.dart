@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Authentication.dart';
+import 'DialogBox.dart';
 
 enum FormType { login, register }
 
@@ -18,6 +19,8 @@ class LoginRegisterPage extends StatefulWidget {
 }
 
 class _LoginRegisterState extends State<LoginRegisterPage> {
+  DialogBox dialogBox = DialogBox();
+
   final formKey = GlobalKey<FormState>();
   FormType _formType = FormType.register;
   String _email = "";
@@ -39,14 +42,21 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
       try {
         if (_formType == FormType.login) {
           String userId = await widget.auth.SignIn(_email, _password);
+          dialogBox.information(
+              context, "Congratulations", "you are logged in successfully!");
+
           print("login userId: " + userId);
         } else {
           String userId = await widget.auth.SignUp(_email, _password);
+          dialogBox.information(context, "Congratulations",
+              "your account has been created successfully!");
+
           print("Registration userId: " + userId);
         }
 
         widget.onSignedIn();
       } catch (e) {
+        dialogBox.information(context, "Error", e.toString());
         print("Error: " + e.toString());
       }
     }
@@ -174,3 +184,4 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
 
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
+
