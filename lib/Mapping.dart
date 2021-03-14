@@ -29,7 +29,7 @@ class MappingPage extends StatefulWidget {
   final AuthImplementation auth;
 
   MappingPage({
-    this.auth,
+    required this.auth,
   });
 
   State<StatefulWidget> createState() {
@@ -79,6 +79,5 @@ class _MappingPageState extends State<MappingPage> {
           onSignedOut: _signedOut,
         );
     }
-    return null;
   }
 }

@@ -13,17 +13,17 @@ class Auth implements AuthImplementation {
   Future<String> SignIn(String email, String password) async {
     UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return user.user.uid;
+    return user.user!.uid;
   }
 
   Future<String> SignUp(String email, String password) async {
     UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    return user.user.uid;
+    return user.user!.uid;
   }
 
   Future<String> getCurrentUser() async {
-    User user = _firebaseAuth.currentUser;
+    User user = _firebaseAuth.currentUser!;
     return user.uid;
   }
 

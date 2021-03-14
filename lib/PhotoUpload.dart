@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -5,30 +7,34 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class UploadPage extends StatefulWidget {
-  State<StatefulWidget> createState() {
-    return _UploadPhotoPageState();
-  }
+  @override
+  _UploadPageState createState() => _UploadPageState();
 }
 
-class _UploadPhotoPageState extends State<UplaodPhotoPage> {
-  File sampleImage;
-  String _myValue;
+class _UploadPageState extends State<UploadPage> {
+  late File sampleImage;
+  late String _myValue;
   final formKey = new GlobalKey<FormState>();
+  ImagePicker _picker = ImagePicker();
 
   Future getImage() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    // var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    var tempImage = await _picker.getImage(source: ImageSource.gallery);
+    final File file = File(tempImage!.path);
 
     setState(() {
-      sampleImage = tempImage;
+      sampleImage = file;
     });
   }
 
   bool validateAndSave() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     }
+    return false;
   }
 
   @override
@@ -65,10 +71,10 @@ class _UploadPhotoPageState extends State<UplaodPhotoPage> {
             TextFormField(
               decoration: new InputDecoration(labelText: 'Description'),
               validator: (value) {
-                return value.isEmpty ? 'Blod Description is required' : null;
+                return value!.isEmpty ? 'Blod Description is required' : null;
               },
               onSaved: (value) {
-                return _myValue = value;
+                _myValue = value!;
               },
             ),
             SizedBox(

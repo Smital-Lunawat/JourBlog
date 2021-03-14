@@ -6,8 +6,8 @@ enum FormType { login, register }
 
 class LoginRegisterPage extends StatefulWidget {
   LoginRegisterPage({
-    this.auth,
-    this.onSignedIn,
+    required this.auth,
+    required this.onSignedIn,
   });
 
   final AuthImplementation auth;
@@ -29,7 +29,7 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
   //Methods
   bool validateAndSave() {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       return true;
     } else {
@@ -63,14 +63,14 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
   }
 
   void moveToRegister() {
-    formKey.currentState.reset();
+    formKey.currentState!.reset();
     setState(() {
       _formType = FormType.register;
     });
   }
 
   void moveToLogin() {
-    formKey.currentState.reset();
+    formKey.currentState!.reset();
     setState(() {
       _formType = FormType.login;
     });
@@ -111,10 +111,10 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
       TextFormField(
         decoration: InputDecoration(labelText: 'Email'),
         validator: (value) {
-          return value.isEmpty ? 'Email is required.' : null;
+          return value!.isEmpty ? 'Email is required.' : null;
         },
         onSaved: (value) {
-          return _email = value;
+          _email = value!;
         },
       ),
       SizedBox(
@@ -124,10 +124,10 @@ class _LoginRegisterState extends State<LoginRegisterPage> {
         decoration: InputDecoration(labelText: 'Password'),
         obscureText: true,
         validator: (value) {
-          return value.isEmpty ? 'Password is required.' : null;
+          return value!.isEmpty ? 'Password is required.' : null;
         },
         onSaved: (value) {
-          return _password = value;
+          _password = value!;
         },
       ),
       SizedBox(
