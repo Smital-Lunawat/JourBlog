@@ -33,8 +33,9 @@ class _UploadPageState extends State<UploadPage> {
     if (form!.validate()) {
       form.save();
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   @override
@@ -71,7 +72,7 @@ class _UploadPageState extends State<UploadPage> {
             TextFormField(
               decoration: new InputDecoration(labelText: 'Description'),
               validator: (value) {
-                return value!.isEmpty ? 'Blod Description is required' : null;
+                return value!.isEmpty ? 'Blog Description is required' : null;
               },
               onSaved: (value) {
                 _myValue = value!;
@@ -82,7 +83,7 @@ class _UploadPageState extends State<UploadPage> {
             ),
             RaisedButton(
               elevation: 10.0,
-              child: Text("add a new post"),
+              child: Text("Add a new post"),
               textColor: Colors.white,
               color: Colors.pink,
               onPressed: validateAndSave,
