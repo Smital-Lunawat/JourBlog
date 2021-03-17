@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -12,8 +13,9 @@ class UploadPage extends StatefulWidget {
 }
 
 class _UploadPageState extends State<UploadPage> {
-  late File sampleImage;
+  File? sampleImage;
   late String _myValue;
+  String url;
   final formKey = new GlobalKey<FormState>();
   ImagePicker _picker = ImagePicker();
 
@@ -36,6 +38,31 @@ class _UploadPageState extends State<UploadPage> {
     } else {
       return false;
     }
+  }
+
+  Future<void> uploadStatusImage() async {
+    if (validateAndSave()) {
+      final Reference postImageRef =
+          FirebaseStorage.instance.ref().child("Post Images");
+
+      var timeKey = DateTime.now();
+      final Reference uploadTask = postImageRef
+          .child(timeKey.toString() + ".jpg")
+          .putFile(sampleImage!) as Reference;
+
+      // var ImageUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+      String imageURL =
+          await firebase_storage.FirebaseStorage.instance.ref.getDownloadURL();
+      // url = ImageUrl.toString();
+      print("Image url=" + url);
+
+      saveToDatabase(imageURL);
+    }
+  }
+
+  void saveToDatabase(imageURL) {
+    var dbTimeKey = DateTime.now();
+    var formatDate = DateFormat('MM');
   }
 
   @override
@@ -62,7 +89,7 @@ class _UploadPageState extends State<UploadPage> {
         child: Column(
           children: <Widget>[
             Image.file(
-              sampleImage,
+              sampleImage as File,
               height: 330.0,
               width: 660.0,
             ),
@@ -86,7 +113,7 @@ class _UploadPageState extends State<UploadPage> {
               child: Text("Add a new post"),
               textColor: Colors.white,
               color: Colors.pink,
-              onPressed: validateAndSave,
+              onPressed: uploadStatusImage,
             )
           ],
         ));
