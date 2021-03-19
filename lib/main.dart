@@ -14,6 +14,7 @@ class BlogApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Jour Blog",
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,

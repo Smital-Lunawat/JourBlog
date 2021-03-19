@@ -96,7 +96,7 @@ class _UploadPageState extends State<UploadPage> {
             Image.file(
               sampleImage as File,
               height: 330.0,
-              width: 660.0,
+              fit: BoxFit.contain,
             ),
             SizedBox(
               height: 15.0,

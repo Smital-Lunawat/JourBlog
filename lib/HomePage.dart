@@ -1,7 +1,11 @@
 import 'package:blog_app_vs/PhotoUpload.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Authentication.dart';
 import 'PhotoUpload.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -17,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   void _logoutUser() async {
     try {
       await widget.auth.signOut();
@@ -32,7 +38,35 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: new Text('Jour Blog'),
       ),
-      body: Container(),
+      body: PaginateFirestore(
+          itemBuilderType:
+              PaginateBuilderType.listView, // listview and gridview
+
+          itemBuilder: (index, context, documentSnapshot) => Row(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: documentSnapshot.data()!['image'],
+                    height: 250,
+                    fit: BoxFit.contain,
+                  ),
+                  Column(
+                    children: [
+                      Text(documentSnapshot.data()!['description']),
+                      Text(documentSnapshot.data()!['date']),
+                      Text(documentSnapshot.data()!['time']),
+                    ],
+                  ),
+                ],
+              ),
+          // orderBy is compulsary to enable pagination
+          itemsPerPage: 10,
+          query: FirebaseFirestore.instance
+              .collection('Posts')
+              .doc('${auth.currentUser!.uid}')
+              .collection("UsersPosts")
+              .orderBy('time'),
+          isLive: true // to fetch real-time data
+          ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.lightBlue,
         child: Container(
