@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,6 +17,7 @@ class _UploadPageState extends State<UploadPage> {
   String? _myValue;
   final formKey = GlobalKey<FormState>();
   ImagePicker _picker = ImagePicker();
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future getImage() async {
     var tempImage = await _picker.getImage(source: ImageSource.gallery);
@@ -53,7 +55,10 @@ class _UploadPageState extends State<UploadPage> {
     String date = formatDate.format(dbTimeKey);
     String time = formatTime.format(dbTimeKey);
 
-    CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
+    CollectionReference posts = FirebaseFirestore.instance
+        .collection('Posts')
+        .doc('${auth.currentUser!.uid}')
+        .collection("UsersPosts");
     posts
         .add({
           "image": imageURL,
