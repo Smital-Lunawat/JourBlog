@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'package:firebase_database/firebase_database.dart';
-import 'HomePage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -15,13 +13,11 @@ class UploadPage extends StatefulWidget {
 
 class _UploadPageState extends State<UploadPage> {
   File? sampleImage;
-  late String _myValue;
-  final formKey = new GlobalKey<FormState>();
+  String? _myValue;
+  final formKey = GlobalKey<FormState>();
   ImagePicker _picker = ImagePicker();
 
   Future getImage() async {
-    // var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-
     var tempImage = await _picker.getImage(source: ImageSource.gallery);
     final File file = File(tempImage!.path);
 
@@ -30,34 +26,22 @@ class _UploadPageState extends State<UploadPage> {
     });
   }
 
-  bool validateAndSave() {
-    final form = formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Future<void> uploadStatusImage() async {
-    if (validateAndSave()) {
-      final Reference postImageRef =
-          FirebaseStorage.instance.ref().child("Post Images");
+  void uploadStatusImage() async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
 
       var timeKey = DateTime.now();
-      final Reference uploadTask = postImageRef
-          .child(timeKey.toString() + ".jpg")
-          .putFile(sampleImage!) as Reference;
+      String name = timeKey.toString() + ".jpg";
+      TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+          .ref('Post Images/$name')
+          .putFile(sampleImage as File);
 
-      // var ImageUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-      String imageURL = await uploadTask.getDownloadURL();
-      // await FirebaseStorage.instance.ref().getDownloadURL();
-      // url = ImageUrl.toString();
+      String imageURL = await taskSnapshot.ref.getDownloadURL();
+
       print("Image url=" + imageURL);
-
-      goToHomePage();
       saveToDatabase(imageURL);
+
+      Navigator.pop(context);
     }
   }
 
@@ -69,18 +53,16 @@ class _UploadPageState extends State<UploadPage> {
     String date = formatDate.format(dbTimeKey);
     String time = formatTime.format(dbTimeKey);
 
-    DatabaseReference ref = FirebaseDatabase.instance.reference();
-    var data = {
-      "image": imageURL,
-      "description": _myValue,
-      "date": date,
-      "time": time,
-    };
-    ref.child("Posts").push().set(data);
-  }
-
-  void goToHomePage() {
-    Navigator.pop(context);
+    CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
+    posts
+        .add({
+          "image": imageURL,
+          "description": _myValue!,
+          "date": date,
+          "time": time,
+        })
+        .then((value) => print("Post Added"))
+        .catchError((error) => print("Failed to add post: $error"));
   }
 
   @override
@@ -102,7 +84,7 @@ class _UploadPageState extends State<UploadPage> {
   }
 
   Widget enableUpload() {
-    return new Container(
+    return Form(
         key: formKey,
         child: Column(
           children: <Widget>[
@@ -116,23 +98,27 @@ class _UploadPageState extends State<UploadPage> {
             ),
             TextFormField(
               decoration: new InputDecoration(labelText: 'Description'),
-              validator: (value) {
-                return value!.isEmpty ? 'Blog Description is required' : null;
+              validator: (String? value) {
+                if (value!.isEmpty) {
+                  return 'Blog Description is required';
+                }
               },
-              onSaved: (value) {
+              onSaved: (String? value) {
                 _myValue = value!;
               },
             ),
             SizedBox(
               height: 15.0,
             ),
-            RaisedButton(
-              elevation: 10.0,
+            ElevatedButton(
               child: Text("Add a new post"),
-              textColor: Colors.white,
-              color: Colors.pink,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.pink,
+                onPrimary: Colors.white,
+                onSurface: Colors.grey,
+              ),
               onPressed: uploadStatusImage,
-            )
+            ),
           ],
         ));
   }
