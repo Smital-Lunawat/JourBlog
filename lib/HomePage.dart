@@ -56,9 +56,10 @@ class _HomePageState extends State<HomePage> {
                     //   ],
                     // ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: CachedNetworkImage(
                             imageUrl: documentSnapshot.data()!['image'],
                             height: 150,

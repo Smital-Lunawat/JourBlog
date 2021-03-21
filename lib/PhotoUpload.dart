@@ -109,18 +109,21 @@ class _UploadPageState extends State<UploadPage> {
             SizedBox(
               height: 15.0,
             ),
-            TextFormField(
-              decoration: new InputDecoration(labelText: 'Description'),
-              minLines: 2,
-              maxLines: 25,
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return 'Blog Description is required';
-                }
-              },
-              onSaved: (String? value) {
-                _myValue = value!;
-              },
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: TextFormField(
+                decoration: new InputDecoration(labelText: 'Description'),
+                minLines: 2,
+                maxLines: 25,
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Blog Description is required';
+                  }
+                },
+                onSaved: (String? value) {
+                  _myValue = value!;
+                },
+              ),
             ),
             SizedBox(
               height: 15.0,
