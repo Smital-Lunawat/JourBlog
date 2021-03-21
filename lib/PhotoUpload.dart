@@ -72,19 +72,20 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    // MediaQueryData media = MediaQuery.of(context);
+    MediaQueryData media = MediaQuery.of(context);
 
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("add note"),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text("add note"),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        reverse: true,
-        child: new Center(
-          child: sampleImage == null ? Text("Select an Image") : enableUpload(),
-        ),
-      ),
+      body: sampleImage == null
+          ? Center(child: Text("Select an Image"))
+          : SingleChildScrollView(
+              reverse: true,
+              padding: EdgeInsets.only(bottom: media.viewInsets.bottom),
+              child: enableUpload()),
       floatingActionButton: sampleImage == null
           ? new FloatingActionButton(
               onPressed: getImage,
