@@ -72,24 +72,30 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
+    // MediaQueryData media = MediaQuery.of(context);
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("add note"),
         centerTitle: true,
       ),
-      body: new Center(
-        child: sampleImage == null ? Text("Select an Image") : enableUpload(),
+      body: SingleChildScrollView(
+        reverse: true,
+        child: new Center(
+          child: sampleImage == null ? Text("Select an Image") : enableUpload(),
+        ),
       ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: getImage,
-        tooltip: 'Add Image',
-        child: new Icon(Icons.add_a_photo),
-      ),
+      floatingActionButton: sampleImage == null
+          ? new FloatingActionButton(
+              onPressed: getImage,
+              tooltip: 'Add Image',
+              child: new Icon(Icons.add_a_photo),
+            )
+          : null,
     );
   }
 
   Widget enableUpload() {
-    EdgeInsets ScrollPadding;
     return Form(
         key: formKey,
         child: Column(
@@ -104,6 +110,8 @@ class _UploadPageState extends State<UploadPage> {
             ),
             TextFormField(
               decoration: new InputDecoration(labelText: 'Description'),
+              minLines: 2,
+              maxLines: 25,
               validator: (String? value) {
                 if (value!.isEmpty) {
                   return 'Blog Description is required';
