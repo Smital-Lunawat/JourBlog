@@ -89,13 +89,14 @@ class _UploadPageState extends State<UploadPage> {
   }
 
   Widget enableUpload() {
+    EdgeInsets ScrollPadding;
     return Form(
         key: formKey,
         child: Column(
           children: <Widget>[
             Image.file(
               sampleImage as File,
-              height: 330.0,
+              height: 273.0,
               fit: BoxFit.contain,
             ),
             SizedBox(
@@ -118,7 +119,7 @@ class _UploadPageState extends State<UploadPage> {
             ElevatedButton(
               child: Text("Add a new post"),
               style: ElevatedButton.styleFrom(
-                primary: Colors.pink,
+                primary: Colors.lightBlue,
                 onPrimary: Colors.white,
                 onSurface: Colors.grey,
               ),
